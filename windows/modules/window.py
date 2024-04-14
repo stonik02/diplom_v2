@@ -5,6 +5,7 @@ from windows.modules.figure_canvas import MyFigureCanvas
 from windows.modules.frame import MyFrame
 from windows.modules.button import MyButton
 from windows.modules.label import MyLabel
+from windows.modules.radiobutton import MyRadioButton
 from windows.modules.tabs_controller import TabsController
 from windows.modules.tab_frame import TabFrame
 from windows.modules.frame_label import FrLabel
@@ -14,7 +15,7 @@ class Window:
     def __init__(self, title):
         self.root = Tk()
         self.root.title(title)
-        self.root.geometry("1200x800")
+        self.root.geometry("1700x1000")
         self.root.resizable(False, False)
 
 
@@ -47,3 +48,6 @@ class Window:
 
     def create_figure_canvas(self, master, figure):
         return MyFigureCanvas(master, figure)
+
+    def create_radiobutton(self, master, state, text, value, width, variable, command):
+        return MyRadioButton(master, state, text, value, width, variable, command)

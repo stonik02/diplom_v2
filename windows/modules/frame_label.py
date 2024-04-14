@@ -29,3 +29,6 @@ class FrLabel:
 
     def pack_propagate(self, boolean):
         self.root.pack_propagate(boolean)
+
+    def grid_propagate(self, boolean):
+        self.root.grid_propagate(boolean)

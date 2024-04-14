@@ -1,7 +1,7 @@
 from tkinter import Entry
 
 
-class MyEntry():
+class MyEntry:
     def __init__(self, master, width):
         self.root = Entry(
             master,
@@ -22,3 +22,6 @@ class MyEntry():
             index=index,
             string=text
         )
+
+    def destroy(self):
+        self.root.destroy()

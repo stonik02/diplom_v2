@@ -2,19 +2,22 @@ from matplotlib import pyplot as plt
 
 from function.test_func import *
 
-h_k = 0.09
-l_moda = 6
+h_k = 0.04
+l_moda = 4
 f = 1200
-receiver = [100, 4000]
+receiver = [1000, 6200]
+inception = np.array([0, 3000])   # Источник
 # f = 4995.0
 num_rays = 400
 wk = 2*pi*f
+
+
 
 # t = 1e-3  # Один отрезок времени
 t = 6e-4  # Один отрезок времени
 # steps = 100 # Число шагов в цикле
 c = 1500  # Скорость звука
-inception = np.array([0, 3000])   # Источник
+
 pi = 3.14
 v_dna = 1900   # Скорость звука в дне
 duration_signal = 1
@@ -50,8 +53,16 @@ if __name__ == '__main__':
 
 #500
 # 1400
+    h_k = 1
+    l_moda = 2
+    signal_type = 'sin'
+    receiver = [1000, 8000]
+    inception = [0, 5000]
+    f1 = 50
+    f2 = 0
+    duration_signal = 1
 
-    signal_arr, signal_on_receiver, t_arr, lines, l_arr, fi_wk_res, wk_arr, t = main_func(h_k, l_moda, receiver)
+    signal_arr, signal_on_receiver, t_arr, lines, l_arr, fi_wk_res, wk_arr, t = main_func(h_k, l_moda, signal_type, receiver, inception, f1, f2, duration_signal)
 
     medium_l = 0
     for i in l_arr:
@@ -69,9 +80,12 @@ if __name__ == '__main__':
     plt.xticks(np.arange(0, max(t_arr), 0.2))
     plt.grid(True)
 
+    for i in signal_on_receiver:
+        if i.imag != 0:
+            i = 0
 
     plt.figure(figsize=(20, 5))
-    plt.plot(t_arr, np.real(signal_on_receiver))
+    plt.plot(t_arr, signal_on_receiver)
     plt.title("Принятый сигнал")
     plt.xlabel("t")
     plt.ylabel("s")

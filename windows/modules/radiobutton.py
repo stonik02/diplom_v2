@@ -1,14 +1,16 @@
-from tkinter import Button
+from tkinter import ttk
 
 
-class MyButton:
-    def __init__(self, master, text, command, width, height):
-        self.root = Button(
+class MyRadioButton:
+    def __init__(self, master, state, text, value, width, variable, command):
+        self.root = ttk.Radiobutton(
             master=master,
+            state=state,
             text=text,
-            command=command,
+            value=value,
             width=width,
-            height=height
+            variable=variable,
+            command=command
         )
 
     def grid(self, row, column, padx, pady, sticky):

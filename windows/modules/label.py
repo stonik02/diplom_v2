@@ -1,7 +1,7 @@
 from tkinter import Entry, Label
 
 
-class MyLabel():
+class MyLabel:
     def __init__(self, master, text, font):
         self.root = Label(
             master,

@@ -1,7 +1,7 @@
 from tkinter import Frame
 
 
-class MyFrame():
+class MyFrame:
     def __init__(self, master, height, width, relief, borderwidth):
         if height != 0 and width != 0 and relief != 0 and borderwidth != 0:
             self.root = Frame(master=master,

@@ -2,7 +2,7 @@
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
-class MyFigureCanvas():
+class MyFigureCanvas:
     def __init__(self, master, figure):
         self.root = FigureCanvasTkAgg(
             figure,
