@@ -16,7 +16,7 @@ class Window:
         self.root = Tk()
         self.root.title(title)
         self.root.geometry("1700x1000")
-        self.root.resizable(False, False)
+        # self.root.resizable(False, False)
 
 
     def run(self):
@@ -49,5 +49,5 @@ class Window:
     def create_figure_canvas(self, master, figure):
         return MyFigureCanvas(master, figure)
 
-    def create_radiobutton(self, master, state, text, value, width, variable, command):
-        return MyRadioButton(master, state, text, value, width, variable, command)
+    def create_radiobutton(self, master, text, value, width, variable, command):
+        return MyRadioButton(master,  text, value, width, variable, command)

@@ -3,7 +3,7 @@ from tkinter import SOLID, messagebox, StringVar
 import numpy as np
 from matplotlib.figure import Figure
 
-from function.test_func import main_func
+from function.spectrum_signal import main_func
 
 
 class Tab2:
@@ -184,7 +184,7 @@ class Tab2:
     def view_entry_f1(self):
         if self.label_f1:
             self.label_f1.destroy()
-        self.label_f1 = self.window.create_label(self.frame_buttons_entrys.root, "Введите частоту", font=("Arial Bold", 10))
+        self.label_f1 = self.window.create_label(self.frame_buttons_entrys.root, "Введите частоту, Гц", font=("Arial Bold", 11))
         self.label_f1.grid(row=0, column=8, padx=10, pady=0, sticky='nsew')
 
         if self.entry_f1:
@@ -237,49 +237,49 @@ class Tab2:
         self.label_f1 = None
         self.label_f2 = None
 
-        self.frame_buttons_entrys = self.window.create_label_frame(self.frame.root, width=1650, height=180, text='Входные параметры')
+        self.frame_buttons_entrys = self.window.create_label_frame(self.frame.root, width=1850, height=180, text='Входные параметры')
         self.frame_buttons_entrys.place(relx=0.005, rely=0.01)
         self.frame_buttons_entrys.grid_propagate(False)
 
-        frame_canvas = self.window.create_frame(self.frame.root, width=1600, height=800, relief=SOLID, borderwidth=1)
+        frame_canvas = self.window.create_frame(self.frame.root, width=1700, height=800, relief=SOLID, borderwidth=1)
         frame_canvas.place(relx=0.005, rely=0.22)
 
-        self.frame_canvas_inception = self.window.create_label_frame(frame_canvas.root, width=1600, height=350, text='Сигнал на источнике')
+        self.frame_canvas_inception = self.window.create_label_frame(frame_canvas.root, width=1800, height=350, text='Сигнал на источнике')
         self.frame_canvas_inception.pack(side='top', padx=20, pady=5)
         self.frame_canvas_inception.pack_propagate(False)
 
-        self.frame_canvas_receiver = self.window.create_label_frame(frame_canvas.root, width=1600, height=350, text='Сигнал на приемнике')
+        self.frame_canvas_receiver = self.window.create_label_frame(frame_canvas.root, width=1800, height=350, text='Сигнал на приемнике')
         self.frame_canvas_receiver.pack(side='top', padx=20, pady=5)
         self.frame_canvas_receiver.pack_propagate(False)
 
 
 
-        label_hk = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите коэффициент глубины 0.004-1000', font=("Arial Bold", 10))
+        label_hk = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите коэффициент уклона дна, м', font=("Arial Bold", 11))
         label_hk.grid(row=0, column=0, padx=5, pady=0, sticky='nsew')
         self.entry_hk = self.window.create_entry(self.frame_buttons_entrys.root, width=10)
         self.entry_hk.grid(row=0, column=1, padx=5, pady=15, sticky='nsew')
         self.entry_hk.insert(index=0, text='0.03')
 
-        label_l_moda = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите номер моды 1-6', font=("Arial Bold", 10))
+        label_l_moda = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите номер моды', font=("Arial Bold", 11))
         label_l_moda.grid(row=1, column=0, padx=5, pady=0, sticky='nsew')
         self.entry_l_moda = self.window.create_entry(self.frame_buttons_entrys.root, width=10)
         self.entry_l_moda.grid(row=1, column=1, padx=5, pady=15, sticky='nsew')
         self.entry_l_moda.insert(index=0, text='2')
 
-        label_inception = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите координаты источника в формате x,y', font=("Arial Bold", 10))
+        label_inception = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите координаты источника, м', font=("Arial Bold", 11))
         label_inception.grid(row=0, column=2, padx=10, pady=0, sticky='nsew')
         self.entry_inception = self.window.create_entry(self.frame_buttons_entrys.root, width=15)
         self.entry_inception.grid(row=0, column=3, padx=10, pady=15, sticky='nsew')
         self.entry_inception.insert(index=0, text='0, 5000')
 
-        label_receiver = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите координаты приемника в формате x,y', font=("Arial Bold", 10))
+        label_receiver = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите координаты приемника, м', font=("Arial Bold", 11))
         label_receiver.grid(row=1, column=2, padx=10, pady=0, sticky='nsew')
         self.entry_receiver = self.window.create_entry(self.frame_buttons_entrys.root, width=15)
         self.entry_receiver.grid(row=1, column=3, padx=10, pady=15, sticky='nsew')
         self.entry_receiver.insert(index=0, text='2121, 7788')
 
 
-        label_duration = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите длительность сигнала', font=("Arial Bold", 10))
+        label_duration = self.window.create_label(self.frame_buttons_entrys.root, text='Укажите длительность сигнала, с', font=("Arial Bold", 11))
         label_duration.grid(row=0, column=4, padx=10, pady=0, sticky='nsew')
         self.entry_duration = self.window.create_entry(self.frame_buttons_entrys.root, width=10)
         self.entry_duration.grid(row=0, column=5, padx=10, pady=15, sticky='nsew')
@@ -289,12 +289,12 @@ class Tab2:
         self.selected_signals = StringVar()
 
         label_signals_type = self.window.create_label(self.frame_buttons_entrys.root, text='Выберите тип сигнала',
-                                               font=("Arial Bold", 10))
+                                               font=("Arial Bold", 11))
         label_signals_type.grid(row=0, column=6, padx=10, pady=0, sticky='nsew')
-        radiobutton_sin = self.window.create_radiobutton(self.frame_buttons_entrys.root, state='NORMAL', text=singals_type[0],
-                                                         value=singals_type[0], width = 10, variable = self.selected_signals, command = self.view_entry_f1)
+        radiobutton_sin = self.window.create_radiobutton(self.frame_buttons_entrys.root, text=singals_type[0],
+                                                         value=singals_type[0], width = 11, variable = self.selected_signals, command = self.view_entry_f1)
         radiobutton_sin.grid(row=0, column=7, padx=10, pady=0, sticky='nsew')
-        radiobutton_chirp = self.window.create_radiobutton(self.frame_buttons_entrys.root, state='NORMAL', text=singals_type[1],
+        radiobutton_chirp = self.window.create_radiobutton(self.frame_buttons_entrys.root, text=singals_type[1],
                                                          value=singals_type[1], width = 10, variable = self.selected_signals, command = self.view_entry_f1_f2)
         radiobutton_chirp.grid(row=1, column=7, padx=10, pady=0, sticky='nsew')
 
@@ -306,5 +306,9 @@ class Tab2:
         btn_clear = self.window.create_button(master=self.frame_buttons_entrys.root, text='Очистить график',
                                                      command=self.clear_canvas, width=17, height=2)
         btn_clear.grid(row=2, column=3, padx=5, pady=5, sticky='nsew')
+
+        btn_save = self.window.create_button(master=self.frame_buttons_entrys.root, text='Сохранить в файл',
+                                                     command=self.clear_canvas, width=17, height=2)
+        btn_save.grid(row=2, column=4, padx=5, pady=5, sticky='nsew')
 
 

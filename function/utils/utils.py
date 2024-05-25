@@ -1,8 +1,10 @@
+import cmath
 import math
 
 
 def ql(Wk, c, pi, h, l_moda):
-    return math.sqrt(math.pow(Wk, 2) / math.pow(c, 2) - math.pow(pi, 2) / math.pow(h, 2) * math.pow(l_moda - 1 / 2, 2))
+    ql_point = cmath.sqrt(math.pow(Wk, 2) / math.pow(c, 2) - math.pow(pi, 2) / math.pow(h, 2) * math.pow(l_moda - 1 / 2, 2))
+    return ql_point.real
 
 
 def depth(y_point, k):
@@ -79,6 +81,67 @@ def dk(Wk, n, gradient_n, t, k_old):
 
 
 def distance_between_points(x1, y1, x2, y2):
-    return math.sqrt((float(x2) - x1) ** 2 + (float(y2) - y1) ** 2)
+    return math.hypot(x2 - x1, y2 - y1)
+
+
+def signal_receiver_fft(signal_fft, fi_wk_res, steps, znak):
+    c1 = []
+    c2 = []
+
+    flag = 0
+    k = 0
+    if steps % 2 == 0:  # Если колличество отсчетов сигнала четное
+        # Считаем первую половину
+
+        for i in range(len(fi_wk_res)):  # Проходим по массиву fi(wk) - половина массива сигнала
+            if fi_wk_res[i] == 0:  # Если при определенной частоте сигнал ушел в дно - зануляем его
+                c1.append(0)
+                continue
+            if i == 0 or i == (len(fi_wk_res) - 1):  # Первый и средний элемент в конечном массиве - действительные
+                k += 1
+                c1.append(signal_fft[i])
+                continue
+
+            if znak == 0:
+                c_res = signal_fft[i] * cmath.exp((-1j) * fi_wk_res[i])  # Рассчитываем полученный сигнал
+            else:
+                c_res = signal_fft[i] * cmath.exp((-1j) * -fi_wk_res[i])  # Рассчитываем полученный сигнал
+
+            c1.append(c_res)
+        # Считаем вторую половину
+        for i in reversed(c1):
+            if flag == 0 or flag == len(c1) - 1:
+                flag += 1
+                continue
+            flag += 1
+            c2.append(i.conjugate())
+    else:
+        k = 0
+        print("Мы в елсе")
+
+        for i in range(len(fi_wk_res)):
+            if i == 0:
+                c1.append(signal_fft[i])
+                continue
+            if fi_wk_res[i] == 0:
+                # print(signal_fft[i])
+                k += 1
+                c1.append(0)
+                continue
+
+            if znak == 0:
+                c_res = signal_fft[i] * cmath.exp((-1j) * fi_wk_res[i])  # Рассчитываем полученный сигнал
+            else:
+                c_res = signal_fft[i] * cmath.exp((-1j) * -fi_wk_res[i])  # Рассчитываем полученный сигнал
+            c1.append(c_res)
+        # Считаем вторую половину
+        for i in reversed(c1):
+            if flag == len(c1) - 1:
+                flag += 1
+                continue
+            flag += 1
+            c2.append(i.conjugate())
+
+    return c1 + c2
 
 

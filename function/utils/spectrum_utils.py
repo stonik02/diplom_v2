@@ -27,16 +27,16 @@ def w_k(steps, pi, fk):
 
 
 def ray_path_calculation_v1(h_k, l_moda, receiver, w, inception, c, pi, v_dna, t, alfa_grad):
-
     x_lines = []
     y_lines = []
-    k = 0
     h_start = depth(inception[1], h_k)
-    try:
-        ql0 = ql(w, c, pi, h_start, l_moda)
-    except:
+    t=1e-3
+    # try:
+    ql0 = ql(w, c, pi, h_start, l_moda)
+    if ql0 == 0:
         print(f'ql0 complex w = {w} h_start = {h_start}')
         return [0, 0], 0
+
 
     y_min = float('inf')
     i = 0
@@ -48,19 +48,14 @@ def ray_path_calculation_v1(h_k, l_moda, receiver, w, inception, c, pi, v_dna, t
         x_arr = []
         y_arr = []
         result_y = 0
-        x_min = float('inf')
         j = 0
         # print(alfa_grad)
         while True:
             j += 1
             h_point = depth(r[1], h_k)
-            try:
-                ql_point = ql(w, c, pi, h_point, l_moda)
-            except:
-                print("QLQLQLQLQLQLQLQLQ")
-                return [0, 0], 0
+            ql_point = ql(w, c, pi, h_point, l_moda)
             if ql_point == 0:
-                break
+                return [0, 0], 0
             c_point = w / ql_point
             if c_point > v_dna:
                 return [0, 0], 0
@@ -133,11 +128,13 @@ def fi_wk(wk, h_k, c, pi, l_moda, receiver, inception, v_dna, t):
     y_array = []
     l_arr = [0] * (len(wk))
     alfa_grad = 0
-    k = 0
+    count_0 = 0
+
     for i in range(int(len(wk)/2+1)):
         wi = wk[i]
         if wi == 0:
             fi_wk_arr.append(0)
+            count_0 += 1
             continue
         fi_wk_res = 0
         delta_ll = []
@@ -146,8 +143,8 @@ def fi_wk(wk, h_k, c, pi, l_moda, receiver, inception, v_dna, t):
         y_arr = line[1]
         x_array.append(x_arr)
         y_array.append(y_arr)
-        if x_arr == 0:
-            k += 1
+        if alfa_grad == 0:
+            count_0 += 0
             fi_wk_arr.append(0)
             continue
         for point in range(len(x_arr)):  # По кол-ву точек
@@ -157,17 +154,19 @@ def fi_wk(wk, h_k, c, pi, l_moda, receiver, inception, v_dna, t):
             if point != 0:
                 # Расстояние между нашей точкой и предыдущей
                 delta_l = distance_between_points(x_point, y_point, x_arr[point - 1],
-                                                  y_arr[point - 1], )
+                                                  y_arr[point - 1])
+                # print(f"({x_point}:{y_point}) - ({x_arr[point - 1]}:{y_arr[point - 1]})")
             h_point = depth(y_point, h_k)
-            try:
-                ql_point = ql(wi, c, pi, h_point, l_moda)
-            except:
-                ql_point = 0
+            # try:
+            #     ql_point = ql(wi, c, pi, h_point, l_moda)
+            # except:
+            #     ql_point = 0
+            ql_point = ql(wi, c, pi, h_point, l_moda)
             l_arr[i] += delta_l
             fi_wk = ql_point * delta_l
             fi_wk_res += fi_wk
             delta_ll.append(delta_l)
         fi_wk_arr.append(fi_wk_res)
         print("Луч номер {}  len(ray) = {} ".format(i,  len(x_arr)))
-    print(f"0 IN FI = {k}")
+    print(f"count_0 = {count_0} ")
     return fi_wk_arr, [x_array, y_array], l_arr

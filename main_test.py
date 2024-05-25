@@ -1,88 +1,99 @@
-from matplotlib import pyplot as plt
+import numpy
+import matplotlib.pyplot as plt
+from matplotlib.ticker import NullFormatter
+from scipy.special import erfc
+import sys
+import logging
+# logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
-from function.test_func import *
+from function.modulate_signal import *
 
-h_k = 0.04
-l_moda = 4
-f = 1200
-receiver = [1000, 6200]
-inception = np.array([0, 3000])   # Источник
-# f = 4995.0
-num_rays = 400
-wk = 2*pi*f
+if __name__ == "__main__":
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
-# t = 1e-3  # Один отрезок времени
-t = 6e-4  # Один отрезок времени
-# steps = 100 # Число шагов в цикле
-c = 1500  # Скорость звука
-
-pi = 3.14
-v_dna = 1900   # Скорость звука в дне
-duration_signal = 1
-
-f_diskr = 1/t
-
-signal_time_array = np.arange(0, duration_signal, t)
-
-if __name__ == '__main__':
-
-    # result_ray, lines, alfa = ray_path_calculation_v1(h_k, l_moda, receiver, wk, inception, c, pi, v_dna, t)
+# code = [1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1]
+    # code = np.random.randint(0, 2, 30)  # Генерация случайной последовательности бит
     #
-    # if alfa != 0:
-    #     plt.figure(figsize=(7, 5))
-    #     # for x, y in zip(lines[0], lines[1]):
-    #     #     plt.plot(x, y, color='black')
-    #     # plt.title("График x y")
+    # Tb = 1/f1 * 10  # продолжительность бита в фазах
+    # t = 1 / (f1 * 20)  # Один отрезок времени (продолжительность бита в фазах)
+    # duration_signal = Tb * len(code)
+    # n_for_bit = int(Tb / t)  # Кол-во отсчетов на бит
+    # signal_time_array = np.arange(0, duration_signal, t)  # Массив длительности сигнала
+    # signal_arr_start = signal_sin(f1, signal_time_array)
     #
-    #     plt.grid()
-    #     plt.xlabel("x")
-    #     plt.ylabel("y")
+    # modulated_signal = modulate_qpsk(code, n_for_bit, signal_arr_start)
     #
-    #     x_coords = result_ray[0]
-    #     y_coords = result_ray[1]
-    #     plt.plot(x_coords, y_coords, color='red', label='')
-    #     plt.scatter(receiver[0], receiver[1], color='green', label='Приемник')
-    #     plt.show()
-
-
-
-    # print(distance_between_points(inception[0], inception[1], receiver[0], receiver[1]))
-
-
-#500
-# 1400
-    h_k = 1
+    # y, signal_receiver_filter, dem = demodulate_qpsk(modulated_signal, n_for_bit)
+    # result_bits = take_bits_from_demodulated_signal(dem, n_for_bit)
+    # beer = bit_comparison(code, result_bits, count_bit)
+    #
+    # signal_fft = fft(signal_arr_start)
+    #
+    # signal_filter = filter_signal(signal_fft, n_for_bit)
+    #
+    # signal_filter = ifft(signal_filter)
+    #
+    # plt.figure(figsize=(20, 5))
+    # plt.plot(signal_time_array, signal_filter)
+    # plt.title("Изначальный сигнал с фильтром низких частот")
+    # plt.xlabel("t")
+    # plt.ylabel("s")
+    # # plt.xticks(np.arange(0, max(t_arr), 0.2))
+    # plt.grid(True)
+    #
+    # plt.figure(figsize=(20, 5))
+    # plt.plot(signal_time_array, signal_receiver_filter)
+    # plt.title("Принятый сигнал сигнал с фильтром низких частот")
+    # plt.xlabel("t")
+    # plt.ylabel("s")
+    # # plt.xticks(np.arange(0, max(t_arr), 0.2))
+    # plt.grid(True)
+    #
+    # plt.show()
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#  MAIN
+    h_k = 0.1
     l_moda = 2
     signal_type = 'sin'
-    receiver = [1000, 8000]
-    inception = [0, 5000]
-    f1 = 50
+    inception = [100, 5000]
+    receiver = [1000, 10000]
+    f1 = 150
     f2 = 0
     duration_signal = 1
 
-    signal_arr, signal_on_receiver, t_arr, lines, l_arr, fi_wk_res, wk_arr, t = main_func(h_k, l_moda, signal_type, receiver, inception, f1, f2, duration_signal)
+    signal_arr, signal_on_receiver, t_arr, y, beer, signal_receiver_filter, signal_filter = main_func(h_k, l_moda, receiver, inception, f1)
 
-    medium_l = 0
-    for i in l_arr:
-        medium_l+=i
-    medium_l = medium_l / len(l_arr)
-    print("Среднее пройденное лучем расстояние = {}".format(max(l_arr)))
-    print("Время, которое шел сигнал = {}".format(max(l_arr)/c))
+    Tb = 1 / f1 * 10  # продолжительность бита в фазах
+    t = 1 / (f1 * 20)  # Один отрезок времени (продолжительность бита в фазах)
+    n_for_bit = int(Tb / t)  # Кол-во отсчетов на бит
 
+    print(f'Кол-во ошибок = {beer}')
+
+    plt.figure(figsize=(20, 5))
+    plt.plot(t_arr[0:5*n_for_bit], signal_arr[0:5*n_for_bit])
+    plt.title("Исходный сигнал")
+    plt.xlabel("t")
+    plt.ylabel("s")
+    # plt.xticks(np.arange(0, max(t_arr), 0.2))
+    plt.grid(True)
+
+    plt.figure(figsize=(20, 5))
+    plt.plot(t_arr[0:5*n_for_bit], signal_on_receiver[0:5*n_for_bit])
+    plt.title("Принятый сигнал")
+    plt.xlabel("t")
+    plt.ylabel("s")
+    plt.xticks(np.arange(0, max(t_arr), 0.2))
+    plt.grid(True)
 
     plt.figure(figsize=(20, 5))
     plt.plot(t_arr, signal_arr)
     plt.title("Исходный сигнал")
     plt.xlabel("t")
     plt.ylabel("s")
-    plt.xticks(np.arange(0, max(t_arr), 0.2))
+    # plt.xticks(np.arange(0, max(t_arr), 0.2))
     plt.grid(True)
-
-    for i in signal_on_receiver:
-        if i.imag != 0:
-            i = 0
 
     plt.figure(figsize=(20, 5))
     plt.plot(t_arr, signal_on_receiver)
@@ -90,22 +101,8 @@ if __name__ == '__main__':
     plt.xlabel("t")
     plt.ylabel("s")
     plt.xticks(np.arange(0, max(t_arr), 0.2))
-    plt.legend(title="Среднее пройденное лучем расстояние = {}".format(int(max(l_arr))))
     plt.grid(True)
 
-
-    plt.figure(figsize=(7, 5))
-    for x, y in zip(lines[0], lines[1]):
-        plt.plot(x, y, color='black')
-    plt.title("Лучи всех частот")
-    plt.xlabel("x")
-    plt.ylabel("y")
-
-    # plt.figure(figsize=(7, 5))
-    # plt.plot(wk_arr[:int(len(wk_arr)/2)+1], fi_wk_res)
-    # plt.title("fi/wk")
-    # plt.xlabel("wk")
-    # plt.ylabel("fi")
 
     plt.show()
 
@@ -113,21 +110,32 @@ if __name__ == '__main__':
 
 
 
-
-
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # signal_arr, signal_on_receiver, t_arr, lines, l_arr, fi_wk_res, wk_arr = main_func(h_k, l_moda, signal_type, receiver, inception, f1, f2, duration_signal)
     #
-    # signal_arr = chirp(signal_time_array, 1, 150, duration_signal, method='linear')
-    # T = 1.0  # Длительность сигнала в секундах
-    # f0 = 20  # Начальная частота в Гц
-    # f1 = 200  # Конечная частота в Гц
-    # t = np.linspace(0, T, int(T * 1000))  # Временная ось от 0 до T с шагом 1 миллисекунда
+    # medium_l = 0
+    # for i in l_arr:
+    #     medium_l+=i
+    # medium_l = medium_l / len(l_arr)
+    # print("Среднее пройденное лучем расстояние = {}".format(max(l_arr)))
+    # print("Время, которое шел сигнал = {}".format(max(l_arr)/c))
     #
-    # # Генерация линейного chirp сигнала
-    # signal = chirp(t, f0=f0, f1=f1, t1=T, method='linear')
-    # plt.figure(figsize=(7, 5))
-    # plt.plot(t, signal)
-    # plt.title("fi/wk")
+    #
+    # plt.figure(figsize=(20, 5))
+    # plt.plot(t_arr, signal_arr)
+    # plt.title("Исходный сигнал")
     # plt.xlabel("t")
     # plt.ylabel("s")
+    # plt.xticks(np.arange(0, max(t_arr), 0.2))
+    # plt.grid(True)
+    #
+    # plt.figure(figsize=(20, 5))
+    # plt.plot(t_arr, signal_on_receiver)
+    # plt.title("Принятый сигнал")
+    # plt.xlabel("t")
+    # plt.ylabel("s")
+    # plt.xticks(np.arange(0, max(t_arr), 0.2))
+    # plt.legend(title="Среднее пройденное лучем расстояние = {}".format(int(max(l_arr))))
+    # plt.grid(True)
     #
     # plt.show()

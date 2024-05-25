@@ -48,10 +48,9 @@ class Tab1:
         self.description = self.window.create_label(
             self.frame_description.root,
             text="1. Луч, выпущенный под {} градусов попадает в приемник. На графике он отображен {} цветом. \n\n"
-                 "Расстояние от луча до приемника = {} метров. \n\n"
                  "2. Лучи подходят к берегу на расстояние = {} метров. \n\n".format(
                 int(result_lych[2] * 180 / 3.14), "Красным", int(distance_min), int(y_min)),
-            font=("Arial Bold", 10)
+            font=("Arial Bold", 12)
         )
 
         self.description.pack()
@@ -182,35 +181,35 @@ class Tab1:
                                                      command=self.clear_canvas, width=17, height=2)
         btn_clear_canvas.grid(row=0, column=1, padx=5, pady=0, sticky='nsew')
 
-        label_f = self.window.create_label(frame_entrys.root, text="Укажите частоту", font=("Arial Bold", 10))
+        label_f = self.window.create_label(frame_entrys.root, text="Укажите частоту, Гц", font=("Arial Bold", 12))
         label_f.grid(row=0, column=0, padx=5, pady=0, sticky="nsew")
         self.entry_f = self.window.create_entry(frame_entrys.root, width=10)
         self.entry_f.grid(row=0, column=1, padx=5, pady=10, sticky="nsew")
         self.entry_f.insert(index=0, text='300')
 
-        label_inception = self.window.create_label(frame_entrys.root, text="Укажите координаты приемника в формате x,y",
-                                                   font=("Arial Bold", 10))
+        label_inception = self.window.create_label(frame_entrys.root, text="Укажите координаты приемника, м",
+                                                   font=("Arial Bold", 12))
         label_inception.grid(row=1, column=0, padx=5, pady=0, sticky="nsew")
         self.entry_inception = self.window.create_entry(frame_entrys.root, width=15)
         self.entry_inception.grid(row=1, column=1, padx=5, pady=15, sticky="nsew")
         self.entry_inception.insert(index=0, text='2121, 7788')
 
-        label_l_moda = self.window.create_label(frame_entrys.root, text="Укажите номер моды 2-6",
-                                                font=("Arial Bold", 10))
+        label_l_moda = self.window.create_label(frame_entrys.root, text="Укажите номер моды",
+                                                font=("Arial Bold", 12))
         label_l_moda.grid(row=2, column=0, padx=5, pady=0, sticky="nsew")
         self.entry_l_moda = self.window.create_entry(frame_entrys.root, width=10)
         self.entry_l_moda.grid(row=2, column=1, padx=5, pady=15, sticky="nsew")
         self.entry_l_moda.insert(index=0, text='3')
 
-        label_num_rays = self.window.create_label(frame_entrys.root, text="Укажите колличество лучей 30-100",
-                                                  font=("Arial Bold", 10))
+        label_num_rays = self.window.create_label(frame_entrys.root, text="Укажите колличество лучей",
+                                                  font=("Arial Bold", 12))
         label_num_rays.grid(row=3, column=0, padx=5, pady=0, sticky="nsew")
-        self.entry_num_rays = self.window.create_entry(frame_entrys.root, width=10)
+        self.entry_num_rays = self.window.create_entry(frame_entrys.root, width=12)
         self.entry_num_rays.grid(row=3, column=1, padx=5, pady=15, sticky="nsew")
         self.entry_num_rays.insert(index=0, text='50')
 
-        label_hk = self.window.create_label(frame_entrys.root, text="Укажите коэффициент глубины 0.004-1000",
-                                            font=("Arial Bold", 10))
+        label_hk = self.window.create_label(frame_entrys.root, text="Укажите коэффициент уклона дна",
+                                            font=("Arial Bold", 12))
         label_hk.grid(row=4, column=0, padx=5, pady=0, sticky="nsew")
         self.entry_hk = self.window.create_entry(frame_entrys.root, width=10)
         self.entry_hk.grid(row=4, column=1, padx=5, pady=15, sticky="nsew")

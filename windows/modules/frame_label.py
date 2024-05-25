@@ -11,7 +11,8 @@ class FrLabel:
             relief=SOLID,
             padx=5,
             pady=5,
-            text=text
+            text=text,
+            font=("Arial Bold", 12)
         )
 
     def pack(self, side, padx, pady):

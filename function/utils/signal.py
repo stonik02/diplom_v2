@@ -7,7 +7,8 @@ pi = 3.14
 
 
 def signal_point(f, t):
-    return 1 * math.sin(2*pi*f*t)
+    # return 1 * math.sin(2*pi*f*t)
+    return math.sin(2 * pi * f * t)
     # chirp
 
 

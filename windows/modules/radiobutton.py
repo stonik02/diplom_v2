@@ -1,16 +1,16 @@
-from tkinter import ttk
+from tkinter import ttk, Radiobutton
 
 
 class MyRadioButton:
-    def __init__(self, master, state, text, value, width, variable, command):
-        self.root = ttk.Radiobutton(
+    def __init__(self, master, text, value, width, variable, command):
+        self.root = Radiobutton(
             master=master,
-            state=state,
             text=text,
             value=value,
             width=width,
             variable=variable,
-            command=command
+            command=command,
+            font=("Arial Bold", 11)
         )
 
     def grid(self, row, column, padx, pady, sticky):

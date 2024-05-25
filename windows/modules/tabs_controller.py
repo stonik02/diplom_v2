@@ -8,7 +8,7 @@ class TabsController:
         self.root = tkinter.ttk.Notebook(
             master,
             height=width,
-            width=height
+            width=height,
         )
 
     def pack(self):

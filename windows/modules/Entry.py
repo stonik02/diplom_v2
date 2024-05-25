@@ -5,7 +5,8 @@ class MyEntry:
     def __init__(self, master, width):
         self.root = Entry(
             master,
-            width=width
+            width=width,
+            font=("Arial Bold", 12)
         )
 
     def grid(self, row, column, padx, pady, sticky):
